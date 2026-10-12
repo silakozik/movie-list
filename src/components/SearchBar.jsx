@@ -9,13 +9,13 @@ function SearchBar({ onSearch, loading }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="search-bar" onSubmit={handleSubmit}>
       <input
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Film ara..."
       />
-      <button type="submit" disabled={loading}>
+      <button type="submit" className="btn btn-primary" disabled={loading}>
         {loading ? 'Aranıyor...' : 'Ara'}
       </button>
     </form>

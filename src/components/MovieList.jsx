@@ -6,7 +6,7 @@ function MovieList({ movies, emptyText, renderActions }) {
   }
 
   return (
-    <ul>
+    <ul className="movie-grid">
       {movies.map((movie) => (
         <MovieCard key={movie.id} movie={movie}>
           {renderActions(movie)}

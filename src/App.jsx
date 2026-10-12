@@ -3,12 +3,20 @@ import { searchMovies } from './utils/api'
 import { useWatchlist } from './hooks/useWatchlist'
 import SearchBar from './components/SearchBar'
 import MovieList from './components/MovieList'
+import Stats from './components/Stats'
+
+const FILTERS = [
+  { value: 'all', label: 'Tümü' },
+  { value: 'unwatched', label: 'İzlenecek' },
+  { value: 'watched', label: 'İzlenen' },
+]
 
 function App() {
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [searched, setSearched] = useState(false)
+  const [filter, setFilter] = useState('all')
 
   const { watchlist, addMovie, removeMovie, toggleWatched } = useWatchlist()
 
@@ -28,12 +36,23 @@ function App() {
 
   const isInWatchlist = (id) => watchlist.some((m) => m.id === id)
 
+  const filteredWatchlist = watchlist.filter((m) => {
+    if (filter === 'watched') return m.watched
+    if (filter === 'unwatched') return !m.watched
+    return true
+  })
+
   return (
-    <div>
-      <h1>🎬 Film İzleme Listem</h1>
+    <div className="app">
+      <header className="hero">
+        <h1>🎬 Film İzleme Listem</h1>
+        <p>Bu akşam ne izliyoruz?</p>
+      </header>
+
+      <Stats watchlist={watchlist} />
 
       <SearchBar onSearch={handleSearch} loading={loading} />
-      {error && <p>{error}</p>}
+      {error && <p className="error">{error}</p>}
 
       {searched && (
         <section>
@@ -43,6 +62,7 @@ function App() {
             emptyText="Film bulunamadı."
             renderActions={(movie) => (
               <button
+                className="btn btn-primary"
                 onClick={() => addMovie(movie)}
                 disabled={isInWatchlist(movie.id)}
               >
@@ -55,15 +75,35 @@ function App() {
 
       <section>
         <h2>İzleme Listem</h2>
+        <div className="filters">
+          {FILTERS.map((f) => (
+            <button
+              key={f.value}
+              className={`btn ${filter === f.value ? 'btn-primary' : ''}`}
+              onClick={() => setFilter(f.value)}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
         <MovieList
-          movies={watchlist}
-          emptyText="Listen henüz boş. Bir film arayıp ekle."
+          movies={filteredWatchlist}
+          emptyText={
+            watchlist.length === 0
+              ? 'Listen henüz boş. Bir film arayıp ekle.'
+              : 'Bu filtreye uyan film yok.'
+          }
           renderActions={(movie) => (
             <>
-              <button onClick={() => toggleWatched(movie.id)}>
+              <button className="btn" onClick={() => toggleWatched(movie.id)}>
                 {movie.watched ? 'İzlenmedi yap' : 'İzlendi'}
               </button>
-              <button onClick={() => removeMovie(movie.id)}>Sil</button>
+              <button
+                className="btn btn-danger"
+                onClick={() => removeMovie(movie.id)}
+              >
+                Sil
+              </button>
             </>
           )}
         />
