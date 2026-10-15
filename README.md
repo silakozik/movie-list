@@ -1,16 +1,62 @@
-# React + Vite
+# Film İzleme Listesi
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React ve Vite ile yapılmış bir film izleme listesi. OMDb üzerinden film aranır; seçilen filmler listeye eklenir, izlendi olarak işaretlenir veya silinir.
 
-Currently, two official plugins are available:
+**Canlı site:** https://filmliist.netlify.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Ekran görüntüsü
 
-## React Compiler
+![Film izleme listesi](ekran-goruntusu.png)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Özellikler
 
-## Expanding the Oxlint configuration
+- OMDb API film arama
+- Listeye ekleme
+- İzleme listesini görüntüleme (tümü, izlenecek, izlenen)
+- İzlendi durumunu güncelleme
+- Listeden silme
+- Toplam, izlenen ve izlenecek sayıları
+- Listenin tarayıcıda `localStorage` ile saklanması
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Sayfa kapanıp açılsa da izleme listesi durur. Arama sonuçları kaydedilmez.
+
+## Teknolojiler
+
+- React
+- Vite
+- Düz CSS
+- [OMDb API](https://www.omdbapi.com/)
+
+## Proje yapısı
+
+- `components/`: arayüz bileşenleri
+- `hooks/`: izleme listesi mantığı
+- `utils/`: API ve LocalStorage yardımcıları
+
+## Kurulum
+
+Node.js kurulu olmalı.
+
+```bash
+npm install
+```
+
+Proje klasöründe `.env` dosyası oluştur ve OMDb anahtarını yaz:
+
+```bash
+VITE_OMDB_KEY=anahtarın
+```
+
+Ücretsiz anahtar için [omdbapi.com/apikey.aspx](https://www.omdbapi.com/apikey.aspx) adresinden kayıt olunur.
+
+Geliştirme sunucusunu başlat:
+
+```bash
+npm run dev
+```
+
+Uygulama `http://localhost:5173` adresinde açılır.
+
+## Veriler nerede duruyor
+
+İzleme listesi sunucuya gitmez. Tarayıcıda `movie-watchlist` anahtarıyla saklanır. Başka bir tarayıcıda veya site verileri silinince liste boş görünür.
